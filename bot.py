@@ -26,4 +26,6 @@ def send_mess(chat, text):
 
 
 chat_id = get_chat_id(last_update(get_updates_json(url)))
-send_mess(chat_id, 'First message from python')
+send_mess(chat_id, 'Так, все, Серега')
+send_mess(chat_id, 'Задолбал')
+send_mess(chat_id, 'Иди ботай')
