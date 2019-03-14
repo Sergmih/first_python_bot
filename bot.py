@@ -25,7 +25,5 @@ def send_mess(chat, text):
     return response
 
 
-get_updates_json(url)
-
-#chat_id = get_chat_id(last_update(get_updates_json(url)))
-#ssend_mess(chat_id, 'First message from python')
+chat_id = get_chat_id(last_update(get_updates_json(url)))
+send_mess(chat_id, 'First message from python')
