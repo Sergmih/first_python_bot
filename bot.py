@@ -31,13 +31,15 @@ def send_echo_answer(lastupdate):
 
 
 def echo_bot_function():
-    last_update_id = 0
+    lastupdateid = 0
     while 1:
         response = get_updates_json()
         lastupdate = get_last_update(response)
-        if lastupdate['update_id'] == last_update_id:
+        if lastupdate['update_id'] == lastupdateid or \
+                lastupdate['message']['from']['is_bot'] == 'true':
             pass
         else:
+            lastupdateid = lastupdate['update_id']
             send_echo_answer(lastupdate)
         sleep(2)
 
