@@ -4,6 +4,7 @@ import telebot
 
 bot = telebot.TeleBot(config.token)
 
+bot.send_message(350378109, 'Hi!')
 
 @bot.message_handler(content_types=["text"])
 def repeater(message):
