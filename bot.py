@@ -36,7 +36,7 @@ def echo_bot_function():
         else:
             lastupdateid = lastupdate['update_id']
             send_echo_answer(lastupdate)
-        sleep(5)
+        sleep(2)
 
 
 def main():
