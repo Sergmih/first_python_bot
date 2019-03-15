@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import config
 import requests
-import telebot
 from time import sleep
 
 
@@ -47,4 +46,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
