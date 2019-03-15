@@ -1,31 +1,13 @@
-import requests
+import config
+import telebot
 
-url = 'https://api.telegram.org/bot733240319:AAHZRY9w7JThKrkSZ_4cKKBQI_PH_QfHZ8A/'
-
-
-def get_updates_json(request):
-    response = requests.get(request + 'getUpdates')
-    return response.json()
+bot = telebot.TeleBot(config.token)
 
 
-def last_update(data):
-    results = data['result']
-    total_updates = len(results) - 1
-    return results[total_updates]
+@bot.message_handler(content_types=["text"])
+def repeater(message):
+    bot.send_message(message.chat.id, message.text)
 
 
-def get_chat_id(update):
-    chat_id = update['message']['chat']['id']
-    return chat_id
-
-
-def send_mess(chat, text):
-    params = {'chat_id': chat, 'text': text}
-    response = requests.post(url + 'sendMessage', data=params)
-    return response
-
-
-chat_id = get_chat_id(last_update(get_updates_json(url)))
-send_mess(chat_id, 'Так, все, Серега')
-send_mess(chat_id, 'Задолбал')
-send_mess(chat_id, 'Иди ботай')
+if __name__ == '__main__':
+    bot.polling(none_stop=True)
