@@ -19,8 +19,8 @@ def get_updates_json():
 
 def get_last_update(response):
     result = response['result']
-    len = len(result)
-    return result[len-1]
+    lens = len(result)
+    return result[lens-1]
 
 
 def send_echo_answer(lastupdate):
