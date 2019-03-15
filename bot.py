@@ -14,7 +14,7 @@ requests.post(URL + 'sendMessage', data=param)
 
 def get_updates_json():
     response = requests.get(URL + 'getUpdates')
-    return response
+    return response.json()
 
 
 def get_last_update(response):
