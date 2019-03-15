@@ -7,11 +7,6 @@ from time import sleep
 URL = "https://api.telegram.org/bot{}/".format(config.token)
 
 
-
-param = {'chat_id': 350378109, 'text': 'Hello!'}
-requests.post(URL + 'sendMessage', data=param)
-
-
 def get_updates_json():
     response = requests.get(URL + 'getUpdates')
     return response.json()
@@ -41,7 +36,7 @@ def echo_bot_function():
         else:
             lastupdateid = lastupdate['update_id']
             send_echo_answer(lastupdate)
-        sleep(2)
+        sleep(5)
 
 
 def main():
