@@ -34,7 +34,7 @@ def common_answer(message):
     bot.send_message(config.my_chat_id, 'аудиозапись')
 
 
-@bot.message_handler(content_types=['command'])
+@bot.message_handler(content_types=['commands'])
 def common_answer(message):
     print('пришла команда')
     bot.send_message(config.my_chat_id, 'а вот команды я пока не умею обрабатывать')
