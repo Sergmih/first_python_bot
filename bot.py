@@ -6,7 +6,7 @@ bot = telebot.TeleBot(config.token)
 
 
 @bot.message_handler(content_types=['text'])
-def common_answer():
+def common_answer(message):
     print('пришло сообщение')
     bot.send_message(config.my_chat_id, 'я не понимаю, но ты все равно пиши чонить)')
 
