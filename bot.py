@@ -8,7 +8,7 @@ bot = telebot.TeleBot(config.token)
 @bot.message_handler(content_types=['text'])
 def common_answer(message):
     print('пришло обычное сообщение')
-    bot.send_message(config.my_chat_id, 'я не понимаю, но ты все равно пиши чонить)')
+    bot.send_message(config.my_chat_id, message.text)
 
 
 @bot.message_handler(content_types=['photo'])
