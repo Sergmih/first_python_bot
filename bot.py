@@ -5,9 +5,14 @@ import telebot
 bot = telebot.TeleBot(config.token)
 
 
+@bot.message_handler(content_types=['text'])
+def common_answer():
+    print('пришло сообщение')
+    bot.send_message(config.my_chat_id, 'я не понимаю, но ты все равно пиши чонить)')
+
+
 def main():
-    bot.send_message(config.my_chat_id, 'trying telebot lib')
-    print('kek')
+    bot.polling(none_stop=True, interval=0)
 
 
 if __name__ == '__main__':
