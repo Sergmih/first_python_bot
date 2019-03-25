@@ -7,13 +7,13 @@ bot = telebot.TeleBot(config.token)
 
 @bot.message_handler(commands=['help'])
 def common_answer(message):
-    print('Команда ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
+    print('Команда: ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
     bot.send_message(config.my_chat_id, 'а вот команды я пока не умею обрабатывать')
 
 
 @bot.message_handler(content_types=['text'])
 def common_answer(message):
-    print('Сообщение ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
+    print('Сообщение: ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
     bot.send_message(config.my_chat_id, message.text)
 
 
@@ -60,7 +60,7 @@ def common_answer(message):
 
 
 def main():
-    bot.send_message(config.my_chat_id, 'дратути, я умею распознавать тип сообщений')
+    bot.send_message(config.my_chat_id, 'Я опять падал')
     bot.polling(none_stop=True, interval=0)
 
 
