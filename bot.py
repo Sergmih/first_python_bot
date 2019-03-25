@@ -14,6 +14,12 @@ def common_answer(message):
     commands.get_list_of_currency(bot)
 
 
+@bot.message_handler(commands=['get'])
+def common_answer(message):
+    print('Команда: ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
+    commands.get_current_rate('USD', bot)
+
+
 @bot.message_handler(content_types=['text'])
 def common_answer(message):
     print('Сообщение: ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
@@ -30,7 +36,6 @@ def common_answer(message):
 def common_answer(message):
     print('Стикер от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
     bot.send_message(config.my_chat_id, 'это стикер')
-    commands.get_current_rate('USD', bot)
 
 
 @bot.message_handler(content_types=['document'])
