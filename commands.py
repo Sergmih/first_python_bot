@@ -45,3 +45,5 @@ def parse_get_command(message, bot):
         if currency_ == tup[0]:
             print('запрос курса {}'.format(currency_))
             get_current_rate(currency_, bot)
+            return
+    bot.send_message(config.my_chat_id, 'Некорректная валюта')
