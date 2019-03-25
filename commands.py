@@ -32,6 +32,16 @@ def get_current_rate(currency, bot):
         bot.send_message(config.my_chat_id, 'Ошибка\n возможно команда была некорректная')
 
 
+def check_correct_currency_name(currency):
+    print('проверка правильности написания валюты')
+    query = 'SELECT currency_code FROM general_info'
+    response = database.db_execute_query(query)
+    for tup in response:
+        if currency == tup[0]:
+            return True
+    return False
+
+
 """ Команда get---------------------------------------------------------------------------------------------GET-----
     имеет две сигнатуры get и get <валюта>
     В первом случае выводит список доступных валют,
@@ -68,11 +78,12 @@ def parse_statistic_command(message, bot):
     pos = message.text.find('/statistic')
     work_message = message.text[pos + 11:]
     print("work_message = " + work_message)
-    pos = work_message.find(' ')
-    currency = work_message[:pos]
-    work_message = work_message[pos:]
-    print("currency = " + currency + " work_message = " + work_message)
     pos = work_message.find('from')
+    currency = work_message[:pos-1]
+    if not check_correct_currency_name(currency):
+        bot.send_message(config.my_chat_id, 'Некорректная валюта')
+        return
+    print("currency = " + currency + " work_message = " + work_message)
     if pos != -1:
         from_date = work_message[pos+5:pos+15]
     else:
@@ -80,7 +91,7 @@ def parse_statistic_command(message, bot):
     print("from_date = " + from_date)
     pos = work_message.find('to')
     if pos != -1:
-        to_date = work_message[pos+5:pos+15]
+        to_date = work_message[pos+3:pos+13]
     else:
         now = datetime.datetime.now()
         today_date = now.strftime("%Y.%m.%d")
