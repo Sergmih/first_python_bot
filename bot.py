@@ -11,7 +11,7 @@ bot = telebot.TeleBot(config.token)
 def common_answer(message):
     print('Команда: ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
     bot.send_message(config.my_chat_id, 'а вот команды я пока не умею обрабатывать')
-    commands.get_list_of_currency()
+    commands.get_list_of_currency(bot)
 
 
 @bot.message_handler(content_types=['text'])
@@ -30,6 +30,7 @@ def common_answer(message):
 def common_answer(message):
     print('Стикер от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
     bot.send_message(config.my_chat_id, 'это стикер')
+    commands.get_currency_rate('USD', bot)
 
 
 @bot.message_handler(content_types=['document'])

@@ -1,17 +1,18 @@
 import database
 import config
 import datetime
+import telebot
 
 
-def get_list_of_currency():
+def get_list_of_currency(bot):
     query = 'SELECT * FROM general_info'
     text = database.db_execute_query(query)
     for line in text:
         message = 'Чтобы узнать цену за {} {} \nнапишите команду /get {}\n'.format(line[2], line[3], line[1])
-        print(message)
+        bot.send_message(config.my_chat_id, message)
 
 
-def get_current_rate(currency):
+def get_current_rate(currency, bot):
     now = datetime.datetime.now()
     today_date = now.strftime("%Y.%m.%d")
     if database.check_for_actual_information():
@@ -21,3 +22,4 @@ def get_current_rate(currency):
     text = database.db_execute_query(query)[0][0]
     message = 'Курс {} на сегодняшний день составляет {} руб.'.format(currency, text)
     print(message)
+    bot.send_message(config.my_chat_id, message)
