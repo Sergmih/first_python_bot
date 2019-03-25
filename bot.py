@@ -5,6 +5,12 @@ import telebot
 bot = telebot.TeleBot(config.token)
 
 
+@bot.message_handler(commands=['help'])
+def common_answer(message):
+    print('пришла команда')
+    bot.send_message(config.my_chat_id, 'а вот команды я пока не умею обрабатывать')
+
+
 @bot.message_handler(content_types=['text'])
 def common_answer(message):
     print('пришло обычное сообщение')
@@ -33,12 +39,6 @@ def common_answer(message):
 def common_answer(message):
     print('пришла аудиозапись')
     bot.send_message(config.my_chat_id, 'аудиозапись')
-
-
-@bot.message_handler(commands=['help'])
-def common_answer(message):
-    print('пришла команда')
-    bot.send_message(config.my_chat_id, 'а вот команды я пока не умею обрабатывать')
 
 
 def main():
