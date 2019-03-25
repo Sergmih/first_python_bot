@@ -16,6 +16,7 @@ def common_answer(message):
     print('пришла фотография')
     bot.send_message(config.my_chat_id, 'ооо, а это фотка')
 
+
 @bot.message_handler(content_types=['sticker'])
 def common_answer(message):
     print('пришел стикер')
@@ -34,7 +35,7 @@ def common_answer(message):
     bot.send_message(config.my_chat_id, 'аудиозапись')
 
 
-@bot.message_handler(content_types=['commands'])
+@bot.message_handler(commands=['help'])
 def common_answer(message):
     print('пришла команда')
     bot.send_message(config.my_chat_id, 'а вот команды я пока не умею обрабатывать')
