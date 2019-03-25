@@ -24,11 +24,12 @@ def get_current_rate(currency, bot):
         query = 'SELECT price FROM prices WHERE currency_code = "{}" AND date = "{}"'.format(currency, today_date)
         response_currency = database.db_execute_query(query)[0][0]
         query_count = 'SELECT currency_count FROM general_info WHERE currency_code = "{}"'.format(currency)
-        response_count = database.db_execute_query(query_count)[0][0][0]
+        response_count = database.db_execute_query(query_count)[0][0]
         message = 'Цена {} {} на сегодняшний день составляет {} руб.'.format(response_count, currency, response_currency)
         bot.send_message(config.my_chat_id, message)
     except:
         print('Ошибка в get_current_rate')
+        bot.send_message(config.my_chat_id, 'Ошибка\n возможно команда была некорректная')
 
 
 """ Команда get---------------------------------------------------------------------------------------------GET-----
