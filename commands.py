@@ -9,7 +9,7 @@ def get_list_of_currency(bot):
     text = database.db_execute_query(query)
     message = ''
     for line in text:
-        a = 'Чтобы узнать цену за {} {} \nнапишите команду /get {}\n'.format(line[2], line[3], line[1])
+        a = 'Чтобы узнать цену за {} {} \nнапишите команду "/get {}"\n'.format(line[2], line[3], line[1])
         message += a
     bot.send_message(config.my_chat_id, message)
 
@@ -23,5 +23,5 @@ def get_current_rate(currency, bot):
     query = 'SELECT price FROM prices WHERE currency_code = "{}" AND date = "{}"'.format(currency, today_date)
     text = database.db_execute_query(query)[0][0]
     message = 'Курс {} на сегодняшний день составляет {} руб.'.format(currency, text)
-    print(message)
+    print("запрос курса {} от {} {}".format(currency, message.from_user.first_name, message.from_user.last_name))
     bot.send_message(config.my_chat_id, message)
