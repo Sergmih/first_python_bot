@@ -10,8 +10,7 @@ bot = telebot.TeleBot(config.token)
 @bot.message_handler(commands=['help'])
 def common_answer(message):
     print('Команда: ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
-    bot.send_message(config.my_chat_id, 'а вот команды я пока не умею обрабатывать')
-    commands.get_list_of_currency(bot)
+    bot.send_message(config.my_chat_id, config.help_message)
 
 
 @bot.message_handler(commands=['get'])
