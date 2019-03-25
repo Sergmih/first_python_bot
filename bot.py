@@ -30,7 +30,7 @@ def common_answer(message):
 def common_answer(message):
     print('Стикер от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
     bot.send_message(config.my_chat_id, 'это стикер')
-    commands.get_currency_rate('USD', bot)
+    commands.get_current_rate('USD', bot)
 
 
 @bot.message_handler(content_types=['document'])

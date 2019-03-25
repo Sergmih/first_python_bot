@@ -7,9 +7,11 @@ import telebot
 def get_list_of_currency(bot):
     query = 'SELECT * FROM general_info'
     text = database.db_execute_query(query)
+    message = ''
     for line in text:
-        message = 'Чтобы узнать цену за {} {} \nнапишите команду /get {}\n'.format(line[2], line[3], line[1])
-        bot.send_message(config.my_chat_id, message)
+        a = 'Чтобы узнать цену за {} {} \nнапишите команду /get {}\n'.format(line[2], line[3], line[1])
+        message += a
+    bot.send_message(config.my_chat_id, message)
 
 
 def get_current_rate(currency, bot):
