@@ -35,6 +35,7 @@ def get_current_rate(currency, bot):
 def check_correct_currency_name(currency):
     print('проверка правильности написания валюты')
     query = 'SELECT currency_code FROM general_info'
+    currency = currency.upper()
     response = database.db_execute_query(query)
     for tup in response:
         if currency == tup[0]:
