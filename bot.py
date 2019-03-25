@@ -17,7 +17,7 @@ def common_answer(message):
 @bot.message_handler(commands=['get'])
 def common_answer(message):
     print('Команда: ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
-    commands.get_current_rate('USD', bot)
+    commands.parse_get_command(message, bot)
 
 
 @bot.message_handler(content_types=['text'])

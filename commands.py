@@ -24,3 +24,19 @@ def get_current_rate(currency, bot):
     text = database.db_execute_query(query)[0][0]
     message = 'Курс {} на сегодняшний день составляет {} руб.'.format(currency, text)
     bot.send_message(config.my_chat_id, message)
+
+
+""" Команда get---------------------------------------------------------------------------------------------GET-----
+    имеет две сигнатуры get и get <валюта>
+    В первом случае выводит список доступных валют,
+    во втором текущий курс для заданной валюты"""
+
+
+def parse_get_command(message, bot):
+    pos = message.find('/get')
+    currency = message[pos:].split()
+    query = 'SELECT currency_code FROM general_info'
+    response = database.db_execute_query(query)
+    if currency in response:
+        print('запрос курса {}'.format(currency))
+        get_current_rate(currency, bot)
