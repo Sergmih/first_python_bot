@@ -33,8 +33,9 @@ def get_current_rate(currency, bot):
 
 
 def parse_get_command(message, bot):
-    pos = message.find('/get')
-    currency = message[pos:].split()
+    pos = message.text.find('/get')
+    currency = message.text[pos:].split()
+    print(currency)
     query = 'SELECT currency_code FROM general_info'
     response = database.db_execute_query(query)
     if currency in response:
