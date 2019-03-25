@@ -25,7 +25,7 @@ def common_answer(message):
 
 @bot.message_handler(content_types=['sticker'])
 def common_answer(message):
-    print('Стикер ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
+    print('Стикер от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
     bot.send_message(config.my_chat_id, 'это стикер')
 
 
@@ -39,6 +39,24 @@ def common_answer(message):
 def common_answer(message):
     print('Аудиозапись от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
     bot.send_message(config.my_chat_id, 'аудиозапись')
+
+
+@bot.message_handler(content_types=['video'])
+def common_answer(message):
+    print('Видеозапись от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
+    bot.send_message(config.my_chat_id, 'видосики я не умею обрабатывать, соре')
+
+
+@bot.message_handler(content_types=['voice'])
+def common_answer(message):
+    print('Голосовуха от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
+    bot.send_message(config.my_chat_id, 'такое я не понимаю')
+
+
+@bot.message_handler(content_types=['location'])
+def common_answer(message):
+    print('локация от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
+    bot.send_message(config.my_chat_id, 'нене, давай по сценарию')
 
 
 def main():
