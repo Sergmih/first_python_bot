@@ -35,7 +35,8 @@ def get_current_rate(currency, bot):
 """ Команда get---------------------------------------------------------------------------------------------GET-----
     имеет две сигнатуры get и get <валюта>
     В первом случае выводит список доступных валют,
-    во втором текущий курс для заданной валюты"""
+    во втором текущий курс для заданной валюты
+    """
 
 
 def parse_get_command(message, bot):
@@ -53,3 +54,35 @@ def parse_get_command(message, bot):
             get_current_rate(currency_, bot)
             return
     bot.send_message(config.my_chat_id, 'Некорректная валюта')
+
+
+""" Команда statistic-----------------------------------------------------------------------------STATISTIC---------
+    /statistic показывает помощь по этой команде
+    /statistic <currency> from <from_date> to <to_date> строит график курса указанной валюты в заданных датах.
+    Если не указана дата начала, то по умолчанию считается 2018.01.01, если не указана дата окончания, то берется
+    текущая дата
+    """
+
+
+def parse_statistic_command(message, bot):
+    pos = message.text.find('/statistic')
+    work_message = message.text[pos + 11:]
+    print("work_message = " + work_message)
+    pos = work_message.find(' ')
+    currency = work_message[:pos]
+    work_message = work_message[pos:]
+    print("currency = " + currency + " work_message = " + work_message)
+    pos = work_message.find('from')
+    if pos != -1:
+        from_date = work_message[pos+5:pos+15]
+    else:
+        from_date = '2018.01.01'
+    print("from_date = " + from_date)
+    pos = work_message.find('to')
+    if pos != -1:
+        to_date = work_message[pos+5:pos+15]
+    else:
+        now = datetime.datetime.now()
+        today_date = now.strftime("%Y.%m.%d")
+        to_date = today_date
+    print('to_date = ' + to_date)

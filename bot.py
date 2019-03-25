@@ -19,6 +19,12 @@ def common_answer(message):
     commands.parse_get_command(message, bot)
 
 
+@bot.message_handler(commands=['statistic'])
+def common_answer(message):
+    print('Команда: ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
+    commands.parse_statistic_command(message, bot)
+
+
 @bot.message_handler(content_types=['text'])
 def common_answer(message):
     print('Сообщение: ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
