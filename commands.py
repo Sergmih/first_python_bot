@@ -132,6 +132,6 @@ def create_plot_for_statistic(currency, from_date, to_date, bot):
     for i in range(10):
         labels.append(i * n / 10)
     plt.xticks(labels, rotation=50)
-    plt.savefig('img/' + config.my_chat_id + 'statistic_plot.png', format='png', dpi=100)
+    plt.savefig('img/' + str(config.my_chat_id) + 'statistic_plot.png', format='png', dpi=100)
     bot.send_photo(config.my_chat_id, 'img/' + str(config.my_chat_id) + 'statistic_plot.png')
 
