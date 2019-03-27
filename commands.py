@@ -106,7 +106,7 @@ def parse_statistic_command(message, bot):
         if not to_date:
             to_date = today_date
         else:
-            to_date = from_date[0][3:]
+            to_date = to_date[0][3:]
         print('to date = ' + to_date)
     create_plot_for_statistic(currency, from_date, to_date, bot)
 
