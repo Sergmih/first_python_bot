@@ -83,12 +83,12 @@ def simple_statistic_command(bot):
 
 def parse_statistic_command(message, bot):
     pattern = r'/statistic\s*\b\w\w\w\b(\s*from\s\d\d\d\d\.\d\d\.\d\d)?(\s*to\s\d\d\d\d\.\d\d\.\d\d)?'
-    match = re.search(pattern, message.lower())
+    match = re.search(pattern, message.text.lower())
     print(match[0] if match else 'invalid statistic command')
     if not match:
         print('неправильная команда')
         bot.send_message(config.my_chat_id, 'Упс, ошибочка. Некорректная команда')
-
+        simple_statistic_command(bot)
         return
     else:
         currency = re.search(r'\b\w\w\w\b', match[0])
