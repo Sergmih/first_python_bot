@@ -21,12 +21,14 @@ def common_answer(message):
 
 @bot.message_handler(commands=['statistic'])
 def common_answer(message):
-    try:
-        print('Команда: ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
-        commands.parse_statistic_command(message, bot)
-    except:
-        print('какая-то ошибка в statistic')
-        bot.send_message(config.my_chat_id, 'Произошла ошибка, попробуйте снова')
+    # try:
+    #     print('Команда: ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
+    #     commands.parse_statistic_command(message, bot)
+    # except:
+    #     print('какая-то ошибка в statistic')
+    #     bot.send_message(config.my_chat_id, 'Произошла ошибка, попробуйте снова')
+    print('Команда: ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
+    commands.parse_statistic_command(message, bot)
 
 
 @bot.message_handler(content_types=['text'])
