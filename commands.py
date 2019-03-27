@@ -2,6 +2,8 @@ import database
 import config
 import datetime
 import telebot
+import re
+import matplotlib.pyplot as plt
 
 
 def get_list_of_currency(bot):
@@ -75,26 +77,61 @@ def parse_get_command(message, bot):
     """
 
 
+def simple_statistic_command(bot):
+    bot.send_message(config.my_chat_id, config.statistic_message)
+
+
 def parse_statistic_command(message, bot):
-    pos = message.text.find('/statistic')
-    work_message = message.text[pos + 11:]
-    print("work_message = " + work_message)
-    pos = work_message.find('from')
-    currency = work_message[:pos-1]
-    if not check_correct_currency_name(currency):
-        bot.send_message(config.my_chat_id, 'Некорректная валюта')
+    pattern = r'/statistic\s*\b\w\w\w\b(\s*from\s\d\d\d\d\.\d\d\.\d\d)?(\s*to\s\d\d\d\d\.\d\d\.\d\d)?'
+    match = re.search(pattern, message.lower())
+    print(match[0] if match else 'invalid statistic command')
+    if not match:
+        print('неправильная команда')
+        bot.send_message(config.my_chat_id, 'Упс, ошибочка. Некорректная команда')
+
         return
-    print("currency = " + currency + " work_message = " + work_message)
-    if pos != -1:
-        from_date = work_message[pos+5:pos+15]
     else:
-        from_date = '2018.01.01'
-    print("from_date = " + from_date)
-    pos = work_message.find('to')
-    if pos != -1:
-        to_date = work_message[pos+3:pos+13]
-    else:
-        now = datetime.datetime.now()
-        today_date = now.strftime("%Y.%m.%d")
-        to_date = today_date
-    print('to_date = ' + to_date)
+        currency = re.search(r'\b\w\w\w\b', match[0])
+        print('currency = ' + currency[0])
+        currency = currency[0]
+        from_date = re.search(r'from\s\d\d\d\d\.\d\d\.\d\d', match[0])
+        if not from_date:
+            now = datetime.datetime.now()
+            today_date = now.strftime("%Y.%m.%d")
+            from_date = today_date
+        else:
+            from_date = from_date[0][5:]
+        print('from date = ' + from_date)
+        to_date = re.search(r'to\s\d\d\d\d\.\d\d\.\d\d', match[0])
+        if not to_date:
+            to_date = '2018.01.01'
+        else:
+            to_date = from_date[0][3:]
+        print('to date = ' + to_date)
+    create_plot_for_statistic(currency, from_date, to_date, bot)
+
+
+def create_plot_for_statistic(currency, from_date, to_date, bot):
+    con = database.db_connect(config.db_name)
+    cur = con.cursor()
+    query = 'SELECT date, price FROM prices WHERE currency_code = "{}" AND date >= "{}" ' \
+            'AND date <= "{}"'.format(currency.upper(), from_date, to_date)
+    cur.execute(query)
+    text = cur.fetchall()
+    date_list = []
+    price_list = []
+    for a in text:
+        date_list.append(a[0])
+        price_list.append(a[1])
+    plt.plot(date_list, price_list)
+    plt.title('Курс {} с {} по {}'.format(currency, from_date, to_date))
+    plt.xlabel('дата', fontsize=15)
+    plt.ylabel('цена в рублях', fontsize=15)
+    n = len(date_list)
+    labels = []
+    for i in range(10):
+        labels.append(i * n / 10)
+    plt.xticks(labels, rotation=50)
+    plt.savefig('img/' + config.my_chat_id + 'statistic_plot.png', format='png', dpi=100)
+    bot.send_photo(config.my_chat_id, 'img/' + config.my_chat_id + 'statistic_plot.png')
+

@@ -76,7 +76,7 @@ def insert_new_information(today_date):
     for url in url_list:
         print(url)
         html_doc = requests.get(url)
-        soup = BeautifulSoup(html_doc.text)
+        soup = BeautifulSoup(html_doc.text, features="html.parser")
 
         i = 0
         for currency in soup.find_all('tr'):
