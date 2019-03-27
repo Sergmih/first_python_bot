@@ -96,6 +96,9 @@ def parse_statistic_command(message, bot):
         currency = re.search(r'\b\w\w\w\b', match[0])
         print('currency = ' + currency[0])
         currency = currency[0]
+        if not check_correct_currency_name(currency):
+            bot.send_message(message.chat.id, 'Неправильная валюта')
+            return
         from_date = re.search(r'from\s\d\d\d\d\.\d\d\.\d\d', match[0])
         if not from_date:
             from_date = '2018.01.01'
