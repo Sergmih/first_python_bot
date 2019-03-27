@@ -135,5 +135,6 @@ def create_plot_for_statistic(currency, from_date, to_date, bot):
     path = 'img/' + str(config.my_chat_id) + 'statistic_plot.png'
     plt.savefig(path, format='png', dpi=100)
     plt.close()
-    bot.send_photo(config.my_chat_id, path)
+    with open(path, 'rb') as plot:
+        bot.send_photo(config.my_chat_id, plot)
 
