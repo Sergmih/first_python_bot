@@ -96,15 +96,15 @@ def parse_statistic_command(message, bot):
         currency = currency[0]
         from_date = re.search(r'from\s\d\d\d\d\.\d\d\.\d\d', match[0])
         if not from_date:
-            now = datetime.datetime.now()
-            today_date = now.strftime("%Y.%m.%d")
-            from_date = today_date
+            from_date = '2018.01.01'
         else:
             from_date = from_date[0][5:]
         print('from date = ' + from_date)
         to_date = re.search(r'to\s\d\d\d\d\.\d\d\.\d\d', match[0])
         if not to_date:
-            to_date = '2018.01.01'
+            now = datetime.datetime.now()
+            today_date = now.strftime("%Y.%m.%d")
+            to_date = today_date
         else:
             to_date = from_date[0][3:]
         print('to date = ' + to_date)
