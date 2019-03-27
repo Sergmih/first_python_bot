@@ -6,17 +6,17 @@ import re
 import matplotlib.pyplot as plt
 
 
-def get_list_of_currency(bot):
+def get_list_of_currency(bot, chat_id):
     query = 'SELECT * FROM general_info'
     text = database.db_execute_query(query)
     message = ''
     for line in text:
         a = 'Чтобы узнать цену за {} {} \nнапишите команду "/get {}"\n\n'.format(line[2], line[3], line[1])
         message += a
-    bot.send_message(config.my_chat_id, message)
+    bot.send_message(chat_id, message)
 
 
-def get_current_rate(currency, bot):
+def get_current_rate(currency, bot, chat_id):
     now = datetime.datetime.now()
     today_date = now.strftime("%Y.%m.%d")
     if database.check_for_actual_information():
@@ -31,7 +31,7 @@ def get_current_rate(currency, bot):
         bot.send_message(config.my_chat_id, message)
     except:
         print('Ошибка в get_current_rate')
-        bot.send_message(config.my_chat_id, 'Ошибка\n возможно команда была некорректная')
+        bot.send_message(chat_id, 'Ошибка\n возможно команда была некорректная')
 
 
 def check_correct_currency_name(currency):
@@ -56,7 +56,7 @@ def parse_get_command(message, bot):
     pos = message.text.find('/get')
     split_message = message.text[pos + 4:].split()
     if len(split_message) == 0:
-        get_list_of_currency(bot)
+        get_list_of_currency(bot, message.chat.id)
         return
     currency_ = split_message[0].upper()
     query = 'SELECT currency_code FROM general_info'
@@ -64,9 +64,9 @@ def parse_get_command(message, bot):
     for tup in response:
         if currency_ == tup[0]:
             print('запрос курса {}'.format(currency_))
-            get_current_rate(currency_, bot)
+            get_current_rate(currency_, bot, message.chat.id)
             return
-    bot.send_message(config.my_chat_id, 'Некорректная валюта')
+    bot.send_message(message.chat.id, 'Некорректная валюта')
 
 
 """ Команда statistic-----------------------------------------------------------------------------STATISTIC---------
@@ -77,8 +77,8 @@ def parse_get_command(message, bot):
     """
 
 
-def simple_statistic_command(bot):
-    bot.send_message(config.my_chat_id, config.statistic_message)
+def simple_statistic_command(bot, chat_id):
+    bot.send_message(chat_id, config.statistic_message)
 
 
 def parse_statistic_command(message, bot):
@@ -89,8 +89,8 @@ def parse_statistic_command(message, bot):
     today_date = now.strftime("%Y.%m.%d")
     if not match:
         print('неправильная команда')
-        bot.send_message(config.my_chat_id, 'Упс, ошибочка. Некорректная команда')
-        simple_statistic_command(bot)
+        bot.send_message(message.chat.id, 'Упс, ошибочка. Некорректная команда')
+        simple_statistic_command(bot, message.chat.id)
         return
     else:
         currency = re.search(r'\b\w\w\w\b', match[0])
@@ -108,10 +108,10 @@ def parse_statistic_command(message, bot):
         else:
             to_date = to_date[0][3:]
         print('to date = ' + to_date)
-    create_plot_for_statistic(currency, from_date, to_date, bot)
+    create_plot_for_statistic(currency, from_date, to_date, bot, message.chat.id)
 
 
-def create_plot_for_statistic(currency, from_date, to_date, bot):
+def create_plot_for_statistic(currency, from_date, to_date, bot, chat_id):
     con = database.db_connect(config.db_name)
     cur = con.cursor()
     query = 'SELECT date, price FROM prices WHERE currency_code = "{}" AND date >= "{}" ' \
@@ -137,5 +137,5 @@ def create_plot_for_statistic(currency, from_date, to_date, bot):
     plt.savefig(path, format='png', dpi=100)
     plt.close()
     with open(path, 'rb') as plot:
-        bot.send_photo(config.my_chat_id, plot)
+        bot.send_photo(chat_id, plot)
 
