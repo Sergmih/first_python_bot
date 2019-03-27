@@ -67,7 +67,7 @@ def parse_get_command(message, bot):
     if not match:
         get_list_of_currency(bot, message.chat.id)
         return
-    currency_ = match[0][5:7]
+    currency_ = match[0][5:8]
     print(currency_)
     query = 'SELECT currency_code FROM general_info'
     response = database.db_execute_query(query)
