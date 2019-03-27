@@ -11,6 +11,10 @@ def db_connect(db_name):
 
 
 def db_execute_query(query):
+    '''
+    Функиця принимает один параметр - sql запрос
+    образабывает его и возвращает ответ, если он есть
+    '''
     con = db_connect(config.db_name)
     cur = con.cursor()
     cur.execute(query)
@@ -19,6 +23,14 @@ def db_execute_query(query):
 
 
 def generate_url_list(start_date, finish_date):
+    '''
+    Функция генерирующая ссфлки на сайт cbr.ru, для получения курса валют за определенную дату
+    необходима при обновлении базы или некоторых других случаев.
+    Принимает 2 аргумента:
+    дату начала генерации
+    и дату конца
+    Возвращает список ссылок
+    '''
     month_list = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     url_list = []
     from_year = int(start_date[0:4])
@@ -52,6 +64,11 @@ def generate_url_list(start_date, finish_date):
 
 
 def get_last_date():
+    '''
+    Функция получения даты последней записи в таблице.
+    Необходима для проверки актуальности информации в таблице и ее обновления
+    Возвращает дату последней записи в таблице
+    '''
     con = db_connect(config.db_name)
     cur = con.cursor()
     query = "SELECT date FROM prices ORDER BY date DESC LIMIT 1"
@@ -60,11 +77,17 @@ def get_last_date():
 
 
 def reverse_date(date):
+    '''функция преобразует дату из формата dd.mm.yyyy в yyyy.mm.dd'''
     new_date = date[6:] + date[2:6] + date[:2]
     return new_date
 
 
 def insert_new_information(today_date):
+    '''
+    Функция для заполнения и обновления базы данных
+    принимает сегодняшнюю дату, запрашивает дату последней записи в таблице
+    и обновляет базу
+    '''
     date = get_last_date()
     con = db_connect(config.db_name)
     cur = con.cursor()
@@ -94,19 +117,12 @@ def insert_new_information(today_date):
 
 
 def check_for_actual_information():
+    '''
+    проверка актуальности информации в бд. Если сегодняшнего курса валют нет,
+    то обновляет базу начиная с последнего присутствующего курса
+    '''
     now = datetime.datetime.now()
     today_date = now.strftime("%Y.%m.%d")
     last_record_in_table = get_last_date()
     if last_record_in_table != today_date:
         return True
-
-
-# def db_start(connection):
-#     cursor = connection.cursor()
-#     cursor.execute("CREATE TABLE IF NOT EXISTS general_info("
-#                                                "int_code INTEGER, "
-#                                                "currency_code TEXT, "
-#                                                "currency_count INTEGER,  "
-#                                                "name TEXT)")
-#     return cursor
-

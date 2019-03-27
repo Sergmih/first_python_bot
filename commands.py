@@ -7,6 +7,10 @@ import matplotlib.pyplot as plt
 
 
 def get_list_of_currency(bot, chat_id):
+    '''
+    При получения команды "./get" без аругментов.
+    Отправляет сообщение пользователю со списком всех поддерживаемых валют
+    '''
     query = 'SELECT * FROM general_info'
     text = database.db_execute_query(query)
     message = ''
@@ -17,6 +21,10 @@ def get_list_of_currency(bot, chat_id):
 
 
 def get_current_rate(currency, bot, chat_id):
+    '''
+    Функция выдает курс запрошенной валюты
+    Перед выполнением запроса проверяется актуальность данных
+    '''
     now = datetime.datetime.now()
     today_date = now.strftime("%Y.%m.%d")
     if database.check_for_actual_information():
@@ -35,6 +43,9 @@ def get_current_rate(currency, bot, chat_id):
 
 
 def check_correct_currency_name(currency):
+    '''
+    Функция проверяет правильность написания запрощенной валюты. Сверяет со списком валют в базе
+    '''
     print('проверка правильности написания валюты')
     query = 'SELECT currency_code FROM general_info'
     currency = currency.upper()
@@ -45,20 +56,18 @@ def check_correct_currency_name(currency):
     return False
 
 
-""" Команда get---------------------------------------------------------------------------------------------GET-----
-    имеет две сигнатуры get и get <валюта>
-    В первом случае выводит список доступных валют,
-    во втором текущий курс для заданной валюты
-    """
-
-
 def parse_get_command(message, bot):
-    pos = message.text.find('/get')
-    split_message = message.text[pos + 4:].split()
-    if len(split_message) == 0:
+    '''
+    Функция парсит команду "/get .."
+    Если аргументы отсутствуют то выдается список доступных валют.
+    При наличии валюты, проверяется корректность запроса и выдается текущий курс
+    '''
+    pattern = r'/get\s\b\w\w\w\b'
+    match = re.search(pattern, message.text.lower())
+    if match:
         get_list_of_currency(bot, message.chat.id)
         return
-    currency_ = split_message[0].upper()
+    currency_ = match[0][5:7]
     query = 'SELECT currency_code FROM general_info'
     response = database.db_execute_query(query)
     for tup in response:
@@ -69,19 +78,21 @@ def parse_get_command(message, bot):
     bot.send_message(message.chat.id, 'Некорректная валюта')
 
 
-""" Команда statistic-----------------------------------------------------------------------------STATISTIC---------
-    /statistic показывает помощь по этой команде
-    /statistic <currency> from <from_date> to <to_date> строит график курса указанной валюты в заданных датах.
-    Если не указана дата начала, то по умолчанию считается 2018.01.01, если не указана дата окончания, то берется
-    текущая дата
-    """
-
-
 def simple_statistic_command(bot, chat_id):
+    '''
+    Отправляет сообщение помощи работы с командой "/statistic"
+    Вызывается при поступлении этой команды без аргументов
+    '''
     bot.send_message(chat_id, config.statistic_message)
 
 
 def parse_statistic_command(message, bot):
+    '''
+    Обработка команды "/statistic <currency> ..."
+    проверяет корректность, строит график за указанные даты и отправяет пользователю.
+    Если не указаны доты начала периода и окончания, то в качестве канача берется 2018.01.01,
+    а в качестве окончания сегодняшняя дата
+    '''
     pattern = r'/statistic\s*\b\w\w\w\b(\s*from\s\d\d\d\d\.\d\d\.\d\d)?(\s*to\s\d\d\d\d\.\d\d\.\d\d)?'
     match = re.search(pattern, message.text.lower())
     print(match[0] if match else 'invalid statistic command')
@@ -115,6 +126,10 @@ def parse_statistic_command(message, bot):
 
 
 def create_plot_for_statistic(currency, from_date, to_date, bot, chat_id):
+    '''
+    создает график для валюты currency, начиная с даты from_date, заканчивая
+    датой to_date. охраянет картинку и отправляет запросившему
+    '''
     con = database.db_connect(config.db_name)
     cur = con.cursor()
     query = 'SELECT date, price FROM prices WHERE currency_code = "{}" AND date >= "{}" ' \
