@@ -64,7 +64,7 @@ def parse_get_command(message, bot):
     '''
     pattern = r'/get\s\b\w\w\w\b'
     match = re.search(pattern, message.text.lower())
-    if match:
+    if not match:
         get_list_of_currency(bot, message.chat.id)
         return
     currency_ = match[0][5:7]
@@ -100,7 +100,6 @@ def parse_statistic_command(message, bot):
     today_date = now.strftime("%Y.%m.%d")
     if not match:
         print('неправильная команда')
-        bot.send_message(message.chat.id, 'Упс, ошибочка. Некорректная команда')
         simple_statistic_command(bot, message.chat.id)
         return
     else:
