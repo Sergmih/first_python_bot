@@ -68,6 +68,7 @@ def parse_get_command(message, bot):
         get_list_of_currency(bot, message.chat.id)
         return
     currency_ = match[0][5:7]
+    print(currency_)
     query = 'SELECT currency_code FROM general_info'
     response = database.db_execute_query(query)
     for tup in response:
