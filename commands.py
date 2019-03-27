@@ -133,6 +133,7 @@ def create_plot_for_statistic(currency, from_date, to_date, bot):
         labels.append(i * n / 10)
     plt.xticks(labels, rotation=50)
     path = 'img/' + str(config.my_chat_id) + 'statistic_plot.png'
+    plt.tight_layout()
     plt.savefig(path, format='png', dpi=100)
     plt.close()
     with open(path, 'rb') as plot:
