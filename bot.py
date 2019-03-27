@@ -15,8 +15,12 @@ def common_answer(message):
 
 @bot.message_handler(commands=['get'])
 def common_answer(message):
-    print('Команда: ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
-    commands.parse_get_command(message, bot)
+    try:
+        print('Команда: ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
+        commands.parse_get_command(message, bot)
+    except:
+        print('ошибка в команде get')
+        bot.send_message(message.chat.id, 'Произошла ошибка, попробуйте снова')
 
 
 @bot.message_handler(commands=['statistic'])
@@ -29,10 +33,16 @@ def common_answer(message):
         bot.send_message(message.chat.id, 'Произошла ошибка, попробуйте снова')
 
 
+@bot.message_handler(commands=['start'])
+def common_answer(message):
+    print('Команда: ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
+    bot.send_message(message.chat.id, config.start_message)
+
+
 @bot.message_handler(content_types=['text'])
 def common_answer(message):
     print('Сообщение: ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
-    bot.send_message(message.chat.id, 'Собеседник из меня так себе, лучше напишите команду')
+    bot.send_message(message.chat.id, 'Неправильная команда')
 
 
 @bot.message_handler(content_types=['photo'])
