@@ -85,6 +85,8 @@ def parse_statistic_command(message, bot):
     pattern = r'/statistic\s*\b\w\w\w\b(\s*from\s\d\d\d\d\.\d\d\.\d\d)?(\s*to\s\d\d\d\d\.\d\d\.\d\d)?'
     match = re.search(pattern, message.text.lower())
     print(match[0] if match else 'invalid statistic command')
+    now = datetime.datetime.now()
+    today_date = now.strftime("%Y.%m.%d")
     if not match:
         print('неправильная команда')
         bot.send_message(config.my_chat_id, 'Упс, ошибочка. Некорректная команда')
@@ -102,8 +104,6 @@ def parse_statistic_command(message, bot):
         print('from date = ' + from_date)
         to_date = re.search(r'to\s\d\d\d\d\.\d\d\.\d\d', match[0])
         if not to_date:
-            now = datetime.datetime.now()
-            today_date = now.strftime("%Y.%m.%d")
             to_date = today_date
         else:
             to_date = from_date[0][3:]
