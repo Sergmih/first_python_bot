@@ -1,4 +1,4 @@
-token = '733240319:AAHZRY9w7JThKrkSZ_4cKKBQI_PH_QfHZ8A'
+token = 'здесь должен быть токен'
 my_chat_id = 350378109
 db_name = 'currency.db'
 table_1 = 'prices'
@@ -13,7 +13,8 @@ help_message = """
 изменения курса выбранной валюты"""
 
 statistic_message = """
-Чтобы получить статистику используйте команду /statistic <currency> (from yyyy.mm.dd) (to yyyy.mm.dd)
+Чтобы получить статистику используйте команду 
+/statistic <currency> (from yyyy.mm.dd) (to yyyy.mm.dd)
 Аргументы в скобках() являются не обязательными"""
 
 start_message = """
