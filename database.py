@@ -40,7 +40,7 @@ def generate_url_list(start_date, finish_date):
     to_month = int(finish_date[5:7])
     to_day = int(finish_date[8:])
     from_day += 1
-    flag = false
+    flag = False
     for year in range(2018, 2020):
         if year < int(from_year):
             continue
@@ -50,7 +50,7 @@ def generate_url_list(start_date, finish_date):
                     if i + 1 == int(from_month) and day < int(from_day):
                         continue
                     if year >= to_year and i + 1 >= to_month and day >= to_day:
-                        flag = true
+                        flag = True
                     if day < 10:
                         date = "0" + str(day)
                     else:
@@ -62,7 +62,7 @@ def generate_url_list(start_date, finish_date):
                     text = "https://www.cbr.ru/currency_base/daily/?date_req=" + date + "." + month + "." + str(year)
                     url_list.append(text)
                     if flag:
-                        return ulr_list
+                        return url_list
     return url_list
 
 
