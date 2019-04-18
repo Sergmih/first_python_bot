@@ -15,7 +15,7 @@ def get_list_of_currency(bot, chat_id):
     text = database.db_execute_query(query)
     message = ''
     for line in text:
-        a = 'Чтобы узнать цену за {} {} \nнапишите команду "/get {}"\n\n'.format(line[2], line[3], line[1])
+        a = '{} {}({})"\n\n'.format(line[2], line[3], line[1])
         message += a
     bot.send_message(chat_id, message)
 
@@ -37,7 +37,7 @@ def get_current_rate(currency, bot, chat_id):
         query_count = 'SELECT currency_count FROM general_info WHERE currency_code = "{}"'.format(currency)
         response_count = database.db_execute_query(query_count)[0][0]
         message = 'Цена {} {} на сегодняшний день составляет {} руб.'.format(response_count, currency, response_currency)
-        bot.send_message(config.my_chat_id, message)
+        bot.send_message(chat_id, message)
     except:
         print('Ошибка в get_current_rate')
         bot.send_message(chat_id, 'Ошибка\n возможно команда была некорректная')
