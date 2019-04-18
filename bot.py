@@ -12,6 +12,7 @@ def common_answer(message):
     print('Команда: ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
     if message.chat.id == config.my_chat_id:
         config.log_flag = not config.log_flag
+        bot.send_message(config.my_chat_id, 'Отправление логов:' + str(config.log_flag))
 
 
 @bot.message_handler(commands=['help'])

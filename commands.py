@@ -8,7 +8,9 @@ import matplotlib.pyplot as plt
 
 def send_me_log(bot, message):
     if config.log_flag:
-        bot.send_message(config.my_chat_id, 'Сообщение : {}\n от {}'.format(message.text, message.from_user.first_name))
+        bot.send_message(config.my_chat_id, 'Сообщение : {}\n от {} {}'.format(message.text,
+                                                                               message.from_user.first_name,
+                                                                               message.from_user.last_name))
 
 
 def get_list_of_currency(bot, chat_id):
