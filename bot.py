@@ -7,10 +7,18 @@ import telebot
 bot = telebot.TeleBot(config.token)
 
 
+@bot.message_handler(commands=['log'])
+def common_answer(message):
+    print('Команда: ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
+    if message.chat.id == config.my_chat_id:
+        config.log_flag = not config.log_flag
+
+
 @bot.message_handler(commands=['help'])
 def common_answer(message):
     print('Команда: ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
     bot.send_message(message.chat.id, config.help_message)
+    commands.send_me_log(bot, message)
 
 
 @bot.message_handler(commands=['get'])
@@ -21,6 +29,7 @@ def common_answer(message):
     except:
         print('ошибка в команде get')
         bot.send_message(message.chat.id, 'Произошла ошибка, попробуйте снова')
+    commands.send_me_log(bot, message)
 
 
 @bot.message_handler(commands=['statistic'])
@@ -31,18 +40,21 @@ def common_answer(message):
     except:
         print('какая-то ошибка в statistic')
         bot.send_message(message.chat.id, 'Произошла ошибка, попробуйте снова')
+    commands.send_me_log(bot, message)
 
 
 @bot.message_handler(commands=['start'])
 def common_answer(message):
     print('Команда: ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
     bot.send_message(message.chat.id, config.start_message)
+    commands.send_me_log(bot, message)
 
 
 @bot.message_handler(content_types=['text'])
 def common_answer(message):
     print('Сообщение: ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
     bot.send_message(message.chat.id, 'Неправильная команда')
+    commands.send_me_log(bot, message)
 
 
 @bot.message_handler(content_types=['photo'])
