@@ -15,7 +15,7 @@ def get_list_of_currency(bot, chat_id):
     text = database.db_execute_query(query)
     message = ''
     for line in text:
-        a = '{} {}({})"\n\n'.format(line[2], line[3], line[1])
+        a = '{} {}({})"\n'.format(line[2], line[3], line[1])
         message += a
     bot.send_message(chat_id, message)
 
