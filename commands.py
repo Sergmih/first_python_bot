@@ -156,7 +156,7 @@ def create_plot_for_statistic(currency, from_date, to_date, bot, chat_id):
     labels = []
     for i in range(10):
         labels.append(i * n / 10)
-    labels.append(n)
+    labels.append(n - 1)
     plt.xticks(labels, rotation=50)
     path = 'img/' + str(config.my_chat_id) + 'statistic_plot.png'
     plt.tight_layout()
