@@ -88,7 +88,7 @@ def reverse_date(date):
 def get_query_from_link(url, fast):
     html_doc = requests.get(url)
     soup = BeautifulSoup(html_doc.text, features="html.parser")
-    list = []
+    tmp_list = []
 
     i = 0
     for currency in soup.find_all('tr'):
@@ -103,9 +103,9 @@ def get_query_from_link(url, fast):
             else:
                 item = 'INSERT INTO prices VALUES("' + date + '", "' + d.get("code") \
                     + '", ' + price + ' )'
-            list.append(item)
+            tmp_list.append(item)
         i += 1
-    return list
+    return tmp_list
 
 
 def insert_new_information(today_date):
