@@ -54,11 +54,11 @@ def get_current_rate(currency, bot, chat_id):
 def get_today_rate(currency, bot, chat_id, date):
     #try:
         print("kek")
-        year = int(date[0:4])
-        month = int(date[5:7])
-        day = int(date[8:])
+        year = date[0:4]
+        month = date[5:7]
+        day = date[8:]
         print("kek")
-        url = "https://www.cbr.ru/currency_base/daily/?date_req=" + day + "." + month + "." + str(year)
+        url = "https://www.cbr.ru/currency_base/daily/?date_req=" + day + "." + month + "." + year
         print(url)
         list = database.get_query_from_link(url, True)
         for item in list:
