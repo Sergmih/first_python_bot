@@ -53,6 +53,7 @@ def get_current_rate(currency, bot, chat_id):
 
 def get_today_rate(currency, bot, chat_id, date):
     #try:
+        print("kek")
         year = int(date[0:4])
         month = int(date[5:7])
         day = int(date[8:])
