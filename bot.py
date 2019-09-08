@@ -24,13 +24,13 @@ def common_answer(message):
 
 @bot.message_handler(commands=['get'])
 def common_answer(message):
-    try:
+    #try:
         print('Команда: ' + message.text + ' от ' + message.from_user.first_name + ' ' + message.from_user.last_name + '\n')
         commands.parse_get_command(message, bot)
-    except:
+    #except:
         print('ошибка в команде get')
         bot.send_message(message.chat.id, 'Произошла ошибка, попробуйте снова')
-    commands.send_me_log(bot, message)
+    #commands.send_me_log(bot, message)
 
 
 @bot.message_handler(commands=['statistic'])
