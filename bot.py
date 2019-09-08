@@ -3,6 +3,12 @@ import database
 import commands
 import telebot
 
+'''
+#Обновим базу локально
+now = datetime.datetime.now()
+today_date = now.strftime("%Y.%m.%d")
+database.insert_new_information(today_date)
+'''
 
 bot = telebot.TeleBot(config.token)
 
