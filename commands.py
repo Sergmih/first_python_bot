@@ -52,7 +52,7 @@ def get_current_rate(currency, bot, chat_id):
 
 
 def get_today_rate(currency, bot, chat_id, date):
-    #try:
+    try:
         print("kek")
         year = date[0:4]
         month = date[5:7]
@@ -70,9 +70,9 @@ def get_today_rate(currency, bot, chat_id, date):
         query_count = 'SELECT currency_count FROM general_info WHERE currency_code = "{}"'.format(currency)
         response_count = database.db_execute_query(query_count)[0][0]
         message = 'Цена {} {} на сегодняшний день составляет {} руб.'.format(response_count, currency, price)
-        bot.send_message(chat_id, 'тут будет курс на сегодня')
-    #except:
-     #   print('Ошибка быстрой валюты')
+        bot.send_message(chat_id, message)
+    except:
+        print('Ошибка быстрой валюты')
 
 
 def check_correct_currency_name(currency):
