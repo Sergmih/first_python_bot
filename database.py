@@ -22,18 +22,6 @@ def db_execute_query(query):
     return cur.fetchall()
 
 
-def generate_url_for_today():
-    date = get_last_date()
-    year = int(date[0:4])
-    month = int(date[5:7])
-    day = int(date[8:])
-    url = "https://www.cbr.ru/currency_base/daily/?date_req=" + day + "." + month + "." + str(year)
-    list = get_query_from_link(url, True)
-    for item in list:
-        if item[0] == ''
-    return url
-
-
 def generate_url_list(start_date, finish_date):
     '''
     Функция генерирующая ссфлки на сайт cbr.ru, для получения курса валют за определенную дату
