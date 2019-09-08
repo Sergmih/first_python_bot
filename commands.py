@@ -61,9 +61,11 @@ def get_today_rate(currency, bot, chat_id, date):
         url = "https://www.cbr.ru/currency_base/daily/?date_req=" + day + "." + month + "." + year
         print(url)
         list = database.get_query_from_link(url, True)
+        print("получили список")
         for item in list:
             if item[0] == currency:
                 price = item[1]
+                print(price)
         print('нашли цену')
         query_count = 'SELECT currency_count FROM general_info WHERE currency_code = "{}"'.format(currency)
         response_count = database.db_execute_query(query_count)[0][0]
