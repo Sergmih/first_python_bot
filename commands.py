@@ -37,7 +37,7 @@ def get_current_rate(currency, bot, chat_id):
     if database.check_for_actual_information():
         print("обновление базы")
         get_today_rate(currency, bot, chat_id, today_date)
-        bot.send_message(chat_id, 'Пожалуйста подождите\nНужно обновить базу')
+        #bot.send_message(chat_id, 'Пожалуйста подождите\nНужно обновить базу')
         database.insert_new_information(today_date)
     try:
         query = 'SELECT price FROM prices WHERE currency_code = "{}" AND date = "{}"'.format(currency, today_date)
