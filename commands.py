@@ -36,7 +36,7 @@ def get_current_rate(currency, bot, chat_id):
     today_date = now.strftime("%Y.%m.%d")
     if database.check_for_actual_information():
         print("обновление базы")
-        get_today_rate(currency, bot, chat_id)
+        get_today_rate(currency, bot, chat_id, today_date)
         bot.send_message(chat_id, 'Пожалуйста подождите\nНужно обновить базу')
         database.insert_new_information(today_date)
     try:
@@ -51,9 +51,8 @@ def get_current_rate(currency, bot, chat_id):
         bot.send_message(chat_id, 'Ошибка\n возможно команда была некорректная')
 
 
-def get_today_rate(currency, bot, chat_id):
-    try:
-        date = database.get_last_date()
+def get_today_rate(currency, bot, chat_id, date):
+    #try:
         year = int(date[0:4])
         month = int(date[5:7])
         day = int(date[8:])
@@ -63,13 +62,13 @@ def get_today_rate(currency, bot, chat_id):
         for item in list:
             if item[0] == currency:
                 price = item[1]
-        print('нашли ценуhe')
+        print('нашли цену')
         query_count = 'SELECT currency_count FROM general_info WHERE currency_code = "{}"'.format(currency)
         response_count = database.db_execute_query(query_count)[0][0]
         message = 'Цена {} {} на сегодняшний день составляет {} руб.'.format(response_count, currency, price)
         bot.send_message(chat_id, 'тут будет курс на сегодня')
-    except:
-        print('Ошибка быстрой валюты')
+    #except:
+     #   print('Ошибка быстрой валюты')
 
 
 def check_correct_currency_name(currency):
