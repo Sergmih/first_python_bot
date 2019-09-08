@@ -22,6 +22,18 @@ def db_execute_query(query):
     return cur.fetchall()
 
 
+def generate_url_for_today():
+    date = get_last_date()
+    year = int(date[0:4])
+    month = int(date[5:7])
+    day = int(date[8:])
+    url = "https://www.cbr.ru/currency_base/daily/?date_req=" + day + "." + month + "." + str(year)
+    list = get_query_from_link(url, True)
+    for item in list:
+        if item[0] == ''
+    return url
+
+
 def generate_url_list(start_date, finish_date):
     '''
     Функция генерирующая ссфлки на сайт cbr.ru, для получения курса валют за определенную дату
@@ -85,6 +97,29 @@ def reverse_date(date):
     return new_date
 
 
+def get_query_from_link(url, fast):
+    html_doc = requests.get(url)
+    soup = BeautifulSoup(html_doc.text, features="html.parser")
+    list = []
+
+    i = 0
+    for currency in soup.find_all('tr'):
+        l = list(currency.find_all('td'))
+        if i > 0:
+            d = {"id": str(l[0])[4:-5], "code": str(l[1])[4:-5], "count": str(l[2])[4:-5],
+                 "fullname": str(l[3])[4:-5], "price": str(l[4])[4:-5]}
+            price = d.get("price").replace(',', '.')
+            date = reverse_date(url[49:])
+            if fast:
+                item = [d.get("code"), price]
+            else:
+                item = 'INSERT INTO prices VALUES("' + date + '", "' + d.get("code") \
+                    + '", ' + price + ' )'
+            list.append(item)
+        i += 1
+    return list
+
+
 def insert_new_information(today_date):
     '''
     Функция для заполнения и обновления базы данных
@@ -101,22 +136,10 @@ def insert_new_information(today_date):
     url_list = generate_url_list(date, today_date)
     for url in url_list:
         print(url)
-        html_doc = requests.get(url)
-        soup = BeautifulSoup(html_doc.text, features="html.parser")
-
-        i = 0
-        for currency in soup.find_all('tr'):
-            l = list(currency.find_all('td'))
-            if i > 0:
-                d = {"id": str(l[0])[4:-5], "code": str(l[1])[4:-5], "count": str(l[2])[4:-5],
-                     "fullname": str(l[3])[4:-5], "price": str(l[4])[4:-5]}
-                price = d.get("price").replace(',', '.')
-                date = reverse_date(url[49:])
-                query = 'INSERT INTO prices VALUES("' + date + '", "' + d.get("code") \
-                        + '", ' + price + ' )'
-                db_execute_query(query)
-                con.commit()
-            i += 1
+        query_list = get_query_from_link(url, False)
+        for query in query_list:
+            db_execute_query(query)
+            con.commit()
 
 
 def check_for_actual_information():

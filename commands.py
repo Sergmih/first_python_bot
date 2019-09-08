@@ -36,6 +36,7 @@ def get_current_rate(currency, bot, chat_id):
     today_date = now.strftime("%Y.%m.%d")
     if database.check_for_actual_information():
         print("обновление базы")
+        get_today_rate(currency, bot, chat_id)
         bot.send_message(chat_id, 'Пожалуйста подождите\nНужно обновить базу')
         database.insert_new_information(today_date)
     try:
@@ -48,6 +49,25 @@ def get_current_rate(currency, bot, chat_id):
     except:
         print('Ошибка в get_current_rate')
         bot.send_message(chat_id, 'Ошибка\n возможно команда была некорректная')
+
+
+def get_today_rate(currency, bot, chat_id):
+    try:
+        date = database.get_last_date()
+        year = int(date[0:4])
+        month = int(date[5:7])
+        day = int(date[8:])
+        url = "https://www.cbr.ru/currency_base/daily/?date_req=" + day + "." + month + "." + str(year)
+        list = database.get_query_from_link(url, True)
+        for item in list:
+            if item[0] == currency:
+                price = item[1]
+        query_count = 'SELECT currency_count FROM general_info WHERE currency_code = "{}"'.format(currency)
+        response_count = database.db_execute_query(query_count)[0][0]
+        message = 'Цена {} {} на сегодняшний день составляет {} руб.'.format(response_count, currency, price)
+        bot.send_message(chat_id, 'тут будет курс на сегодня')
+    except:
+        print('Ошибка быстрой валюты')
 
 
 def check_correct_currency_name(currency):
@@ -156,7 +176,7 @@ def create_plot_for_statistic(currency, from_date, to_date, bot, chat_id):
     labels = []
     for i in range(10):
         labels.append(i * n / 10)
-    labels.append(n - 1)
+    labels.append(n - 1сда)
     plt.xticks(labels, rotation=50)
     path = 'img/' + str(config.my_chat_id) + 'statistic_plot.png'
     plt.tight_layout()
